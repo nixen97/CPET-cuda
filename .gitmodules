@@ -1,0 +1,3 @@
+[submodule "ext/vendor/premake-cuda"]
+	path = ext/vendor/premake-cuda
+	url = git@github.com:nixen97/premake-cuda.git

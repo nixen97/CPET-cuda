@@ -1,0 +1,9 @@
+build/
+ext.egg-info/
+.vs/
+.vscode/
+
+*.sln
+*.vcxproj*
+Makefile
+*.make
