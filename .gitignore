@@ -5,5 +5,3 @@ ext.egg-info/
 
 *.sln
 *.vcxproj*
-Makefile
-*.make
