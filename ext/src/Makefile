@@ -51,7 +51,7 @@ $(ALIB): $(OBJS)
 
 # Link shared lib
 $(SLIB): $(OBJS)
-	$(CC) $(CFLAGS) -shared $^ -o $(OUTDIR)$@ $(LDFLAGS)
+	$(CC) -o $(OUTDIR)$@ $^ -shared $(LDFLAGS) -Wl,-soname=libLib.so -s
 
 # Compile cpp (Not currently supported)
 # $(OBJDIR)%.o: %.cpp $(DEPS)

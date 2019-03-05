@@ -9,9 +9,8 @@ LIB=$(OUTDIR)libLib.so
 CC=gcc
 CPP=g++
 OPTS=-Ofast
-LDFLAGS= -lm -pthread -Wl,-rpath,'$$ORIGIN' -s
-COMMON= -DSTRIP_PYTHON -I../src
-CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors -fPIC
+LDFLAGS= -Wl,-rpath,'$$ORIGIN' -s
+CFLAGS= -MMD -MP -DNDEBUG -DSTRIP_PYTHON -I../src -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors
 
 # OPTS=-O0 -g # <- Debug
 
@@ -28,11 +27,11 @@ all: obj $(EXEC)
 
 # Link executable
 $(EXEC): $(OBJS)
-	$(CC) $(COMMON) $(CFLAGS) $^ -o $(OUTDIR)$@ $(LDFLAGS) $(LIB)
+	$(CC) $^ -o $(OUTDIR)$@ $(LDFLAGS) $(LIB)
 
 # Compile c
 $(OBJDIR)%.o: %.c $(DEPS)
-	$(CC) $(COMMON) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 obj:
 	mkdir -p $(OBJDIR)
@@ -40,4 +39,4 @@ obj:
 .PHONY: clean
 
 clean:
-	rm -rf $(OBJS) $(SLIB) $(ALIB) $(OBJDIR)/*
+	rm -rf $(OBJS) $(OBJDIR)/*
