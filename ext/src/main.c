@@ -1,6 +1,6 @@
 #include <stdlib.h>
-#include "main.h"
 #include "main_kernel.h"
+#include "main.h"
 
 const char* testFunc(void)
 {

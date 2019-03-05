@@ -18,8 +18,8 @@ AR=ar
 ARFLAGS=rcs
 OPTS=-Ofast
 LDFLAGS= -lm -pthread -lc
-COMMON= -DEXT_SO -DSTRIP_PYTHON
-CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors -fPIC
+COMMON= -DEXT_SO
+CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors
 
 # OPTS=-O0 -g # <- Debug
 
@@ -33,37 +33,36 @@ LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
 LDFLAGS+= -lcudnn
 
 # C-objects
-OBJ=main.o ext.o
+OBJ=main.o
 
 # CUDA-objects
 # LDFLAGS+= -lstdc++ # <- Unsure if this is required
-OBJ+=main_kernel.o
+OBJ_CUDA=main_kernel.o
+CUDA_HOST=main_kernel_h.o
 
 OBJS = $(addprefix $(OBJDIR), $(OBJ))
+OBJS_CUDA = $(addprefix $(OBJDIR), $(OBJ_CUDA))
+OBJS_HOST = $(addprefix $(OBJDIR), $(CUDA_HOST))
 DEPS = $(wildcard ./*.h) Makefile
 
 # Build all steps
-all: obj $(SLIB) $(ALIB)
+all: obj $(OBJS) $(OBJS_HOST) $(OBJS_CUDA) $(ALIB)
 
 # Link static lib
-$(ALIB): $(OBJS)
+$(ALIB): $(OBJS_CUDA) $(OBJS_HOST) $(OBJS)
 	$(AR) $(ARFLAGS) $(OUTDIR)$@ $^
-
-# Link shared lib
-$(SLIB): $(OBJS)
-	$(CC) -o $(OUTDIR)$@ $^ -shared $(LDFLAGS) -Wl,-soname=libLib.so -s
-
-# Compile cpp (Not currently supported)
-# $(OBJDIR)%.o: %.cpp $(DEPS)
-#   $(CPP) $(COMMON) $(CFLAGS) -c $< -o $@
 
 # Compile c
 $(OBJDIR)%.o: %.c $(DEPS)
 	$(CC) $(COMMON) $(CFLAGS) -c $< -o $@
 
-# Compile cuda
-$(OBJDIR)%.o: %.cu $(DEPS)
-	$(NVCC) $(ARCH) $(COMMON) --compiler-options "$(CFLAGS)" -c $< -o $@
+# Compile cuda-hostcode
+$(OBJDIR)%_h.o: %.cu $(DEPS)
+	$(NVCC) $(ARCH) -c -rdc=true --compiler-options "$(CFLAGS)" $< -o $@
+
+# Device Link device code	
+$(OBJDIR)%.o: $(OBJDIR)%_h.o $(DEPS)
+	$(NVCC) $(ARCH) -dlink -o $@ $< -lcuda -lcudart -lcublas -lcurand -lcudnn
 
 obj:
 	mkdir -p $(OBJDIR)
@@ -71,4 +70,4 @@ obj:
 .PHONY: clean
 
 clean:
-	rm -rf $(OBJS) $(SLIB) $(ALIB) $(OBJDIR)/*
+	rm -rf $(OBJS) $(ALIB) $(OBJDIR)/*
