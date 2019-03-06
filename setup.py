@@ -11,7 +11,7 @@ ext = Extension('ext',
                 include_dirs=["./ext/src"],
                 library_dirs=["/usr/local/cuda/lib64"],
                 libraries=["cudart"],
-                extra_objects=["./build/test/bin/libLib."])
+                extra_objects=["./build/test/bin/libLib.a"])
 
 setup(name = "ext",
       version = "1.0",
