@@ -19,7 +19,7 @@ ARFLAGS=rcs
 OPTS=-Ofast
 LDFLAGS= -lm -pthread -lc
 COMMON= -DEXT_SO
-CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors
+CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors -fPIC
 
 # OPTS=-O0 -g # <- Debug
 
@@ -62,7 +62,7 @@ $(OBJDIR)%_h.o: %.cu $(DEPS)
 
 # Device Link device code	
 $(OBJDIR)%.o: $(OBJDIR)%_h.o $(DEPS)
-	$(NVCC) $(ARCH) -dlink -o $@ $< -lcuda -lcudart -lcublas -lcurand -lcudnn
+	$(NVCC) $(ARCH) -dlink -Xcompiler -fPIC -o $@ $< -lcuda -lcudart -lcublas -lcurand -lcudnn
 
 obj:
 	mkdir -p $(OBJDIR)
