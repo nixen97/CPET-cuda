@@ -1,5 +1,3 @@
-#ifndef STRIP_PYTHON
-
 #include <Python.h>
 #include "main.h"
 
@@ -30,5 +28,3 @@ PyInit_ext(void)
 {
     return PyModule_Create(&extmodule);
 }
-
-#endif

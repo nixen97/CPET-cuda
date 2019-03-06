@@ -3,13 +3,13 @@ VPATH=.
 EXEC=Test
 OBJDIR=../../build/test/bin-int/test/
 OUTDIR=../../build/test/bin/
-LIB=$(OUTDIR)libLib.so
+LIB=$(OUTDIR)libLib.a
 
 # Base C-stuff
 CC=gcc
 CPP=g++
 OPTS=-Ofast
-LDFLAGS= -Wl,-rpath,'$$ORIGIN' -s
+LDFLAGS= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand -lcudnn -Wl,-rpath,'$$ORIGIN' -s
 CFLAGS= -MMD -MP -DNDEBUG -DSTRIP_PYTHON -I../src -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors
 
 # OPTS=-O0 -g # <- Debug
@@ -27,7 +27,7 @@ all: obj $(EXEC)
 
 # Link executable
 $(EXEC): $(OBJS)
-	$(CC) $^ -o $(OUTDIR)$@ $(LDFLAGS) $(LIB)
+	$(CC) $^ -o $(OUTDIR)$@ $(LIB) $(LDFLAGS)
 
 # Compile c
 $(OBJDIR)%.o: %.c $(DEPS)
