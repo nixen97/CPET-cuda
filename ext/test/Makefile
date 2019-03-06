@@ -27,7 +27,7 @@ all: obj $(EXEC)
 
 # Link executable
 $(EXEC): $(OBJS)
-	$(CC) $^ -o $(OUTDIR)$@ $(LDFLAGS) $(LIB)
+	$(CC) $^ -o $(OUTDIR)$@ $(LIB) $(LDFLAGS)
 
 # Compile c
 $(OBJDIR)%.o: %.c $(DEPS)
