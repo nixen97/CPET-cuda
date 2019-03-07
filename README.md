@@ -1,7 +1,7 @@
 # CPET-cuda
 C-based python extension template with CUDA support.
 
-If CUDA support is not need, consider using [CPET](https://github.com/nixen97/CPET) instead, as it is more flexible.
+If CUDA support is not needed, consider using [CPET](https://github.com/nixen97/CPET) instead, as it is more flexible.
 
 ## Installation
 
