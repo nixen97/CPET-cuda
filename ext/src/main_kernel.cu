@@ -41,10 +41,18 @@ __global__ void testKernel(float *data, const int l)
 #ifdef __cplusplus
 extern "C" {
 #endif
-void test_gpu(float *data, const int length)
+void test_gpu(float *h_data, const int length)
 {
+    float *d_data;
+    checkCudaErrors(cudaMalloc(&d_data, length));
+    
+    checkCudaErrors(cudaMemcpy(d_data, h_data, length, cudaMemcpyHostToDevice));
+    
     // Run kernel
-    testKernel<<< 512, 1024 >>>(data, length);
+    testKernel<<< 256, 1 >>>(d_data, length);
+
+    checkCudaErrors(cudaMemcpy(h_data, d_data, length, cudaMemcpyDeviceToHost));
+    checkCudaErrors(cudaFree(d_data));
 }
 #ifdef __cplusplus
 }
