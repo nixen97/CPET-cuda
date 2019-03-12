@@ -6,4 +6,6 @@ def setup_module():
     global vars
 
 def test_test():
-    assert ext.test() == "I am inside C"
+    a = ext.test()
+    print(a)
+    assert a == True

@@ -2,6 +2,7 @@ build/
 dist/
 ext.egg-info/
 .vs/
+**/__pycache__/
 
 *.sln
 *.vcxproj*

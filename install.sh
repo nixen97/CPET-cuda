@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ext
+cd ext/src
 make
-cd ..
-python setup.py install
+cd ../..
+python setup.py install -f

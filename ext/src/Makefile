@@ -19,7 +19,7 @@ ARFLAGS=rcs
 OPTS=-Ofast
 LDFLAGS= -lm -pthread -lc
 COMMON= -DEXT_SO
-CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors -fPIC
+CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors -fPIC -std=c99
 
 # OPTS=-O0 -g # <- Debug
 
@@ -30,7 +30,7 @@ COMMON+= -I/usr/local/cuda/include/
 LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
 
 # CUDNN
-LDFLAGS+= -lcudnn
+# LDFLAGS+= -lcudnn
 
 # C-objects
 OBJ=main.o
@@ -66,6 +66,7 @@ $(OBJDIR)%.o: $(OBJDIR)%_h.o $(DEPS)
 
 obj:
 	mkdir -p $(OBJDIR)
+	mkdir -p $(OUTDIR)
 
 .PHONY: clean
 

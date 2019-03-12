@@ -9,7 +9,7 @@ LIB=$(OUTDIR)libLib.a
 CC=gcc
 CPP=g++
 OPTS=-Ofast
-LDFLAGS= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand -lcudnn -Wl,-rpath,'$$ORIGIN' -s
+LDFLAGS= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand -Wl,-rpath,'$$ORIGIN' -s
 CFLAGS= -MMD -MP -DNDEBUG -DSTRIP_PYTHON -I../src -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors
 
 # OPTS=-O0 -g # <- Debug

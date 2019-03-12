@@ -6,7 +6,6 @@
 #include "cuda_runtime.h"
 #include "curand.h"
 #include "cublas_v2.h"
-#include "cudnn.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -34,8 +33,7 @@ inline void __checkCudaErrors(cudaError_t err, const char *file, const int line)
 __global__ void testKernel(float *data, const int l)
 {
     int idx = blockIdx.x*blockDim.x+threadIdx.x;
-    if (idx < l)
-        data[idx]++;
+    data[idx]++;
 }
 
 #ifdef __cplusplus
@@ -44,14 +42,15 @@ extern "C" {
 void test_gpu(float *h_data, const int length)
 {
     float *d_data;
-    checkCudaErrors(cudaMalloc(&d_data, length));
+    int b_length = length * sizeof(int);
+    checkCudaErrors(cudaMalloc(&d_data, b_length));
     
-    checkCudaErrors(cudaMemcpy(d_data, h_data, length, cudaMemcpyHostToDevice));
+    checkCudaErrors(cudaMemcpy(d_data, h_data, b_length, cudaMemcpyHostToDevice));
     
     // Run kernel
-    testKernel<<< 256, 1 >>>(d_data, length);
+    testKernel<<< length, 1 >>>(d_data, length);
 
-    checkCudaErrors(cudaMemcpy(h_data, d_data, length, cudaMemcpyDeviceToHost));
+    checkCudaErrors(cudaMemcpy(h_data, d_data, b_length, cudaMemcpyDeviceToHost));
     checkCudaErrors(cudaFree(d_data));
 }
 #ifdef __cplusplus

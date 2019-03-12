@@ -4,7 +4,7 @@
 // A test function
 static PyObject* ext_test(PyObject *self, PyObject *args)
 {
-    return PyUnicode_FromString(testFunc());
+    return PyBool_FromLong(testFunc());
 }
 
 // Method-table
