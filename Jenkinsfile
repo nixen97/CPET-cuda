@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'cd ext'
-                sh 'make
+                sh 'make'
             }
         }
         stage('test') {
