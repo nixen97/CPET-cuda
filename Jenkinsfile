@@ -4,14 +4,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'cd ext'
-                sh 'make'
+                sh 'cd ext & make'
             }
         }
         stage('test') {
             steps {
-                sh 'cd ext'
-                sh 'bash test.sh'
+                sh 'cd ext & bash test.sh'
             }
         }
     }
